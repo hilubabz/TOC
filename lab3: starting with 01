@@ -10,7 +10,7 @@ int main(){
     l=a.length();
    
     for(i=0;i<l;i++){
-        if(a[i]!='0'||a[i]!='1'){
+        if(a[i]!='0'&&a[i]!='1'){
             cout<<"Invalid String";
             return 0;
         }
