@@ -1,0 +1,55 @@
+#include<iostream>
+
+using namespace std;
+
+struct stack{
+    int A[10];
+    int top=-1;
+}S;
+
+void push(int a){
+    S.A[++S.top]=a;
+}
+void pop(){
+    S.top--;
+}
+
+int main(){
+    string str;
+    int len,state=0;
+    cout<<"Enter a string :";
+    cin>>str;
+    len=str.length();
+    for(int i=0;i<len;i++){
+        if(state==0 && str[i]=='0' && S.A[S.top]==0){
+            push(0);
+            state=0;
+        }
+        else if(state==0 && str[i]=='0' &&S.top==-1){
+            push(0);
+            state=0;}
+        else if(state==0 && str[i]=='1' && S.A[S.top]==0){
+            pop();
+            state=0;}
+        
+        else if(state==0 && str[i]=='1' && S.top==-1){
+            push(1);
+            state=0;
+        }
+        else if(state==0 && str[i]=='1' && S.A[S.top]==1){
+            push(1);
+            state=0;}
+        else if(state==0 && str[i]=='0' && S.A[S.top]==1){
+            pop();
+            state=0;}
+        else{
+            cout<<"String rejected";
+            return 0;
+        }
+        }
+    
+    if(S.top==-1)
+        cout<<"String accepted";
+    else
+        cout<<"String rejected";
+}
