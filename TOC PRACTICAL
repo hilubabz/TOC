@@ -1,0 +1,396 @@
+1.	Odd 1 even 0
+#include<iostream>
+#include<string>
+using namespace std;
+
+int main(){
+    int i,state=0;
+    string str;
+    cout<<"Enter a string :";
+    cin>>str;
+    for(i=0;i<str.length();i++){
+        if(state==0 && str[i]=='0')
+            state=1;
+        else if(state==0 && str[i]=='1')
+            state=2;
+        else if(state==1 && str[i]=='0')
+            state=0;
+        else if(state==1 && str[i]=='1')
+            state=3;
+        else if(state==2 && str[i]=='0')
+            state=3;
+        else if(state==2 && str[i]=='1')
+            state=0;
+        else if(state==3 && str[i]=='0')
+            state=2;
+        else if(state==3 && str[i]=='1')
+            state=1;
+        else{
+            cout<<"Invalid string";
+            return 0;
+        }
+    }
+    if(state==2)
+        cout<<"String is accepted";
+    else
+        cout<<"String is rejected";
+    return 0;
+}
+
+
+2.	Ending with ba
+#include<iostream>
+#include<string>
+using namespace std;
+
+int main(){
+    int i,state=0;
+    string str;
+    cout<<"Enter a string :";
+    cin>>str;
+    for(i=0;i<str.length();i++){
+        if(state==0 && str[i]=='a')
+            state=0;
+        else if(state==0 && str[i]=='b')
+            state=1;
+        else if(state==1 && str[i]=='a')
+            state=2;
+        else if(state==1 && str[i]=='b')
+            state=1;
+        else if(state==2 && str[i]=='a')
+            state=0;
+        else if(state==2 && str[i]=='b')
+            state=1;
+        else{
+            cout<<"Invalid string";
+            return 0;
+        }
+    }
+    if(state==2)
+        cout<<"String is accepted";
+    else
+        cout<<"String is rejected";
+    return 0;
+}
+
+3.	Donot end with ba
+#include<iostream>
+#include<string>
+using namespace std;
+
+int main(){
+    int i,state=0;
+    string str;
+    cout<<"Enter a string :";
+    cin>>str;
+    for(i=0;i<str.length();i++){
+        if(state==0 && str[i]=='a')
+            state=0;
+        else if(state==0 && str[i]=='b')
+            state=1;
+        else if(state==1 && str[i]=='a')
+            state=2;
+        else if(state==1 && str[i]=='b')
+            state=1;
+        else if(state==2 && str[i]=='a')
+            state=0;
+        else if(state==2 && str[i]=='b')
+            state=1;
+        else{
+            cout<<"Invalid string";
+            return 0;
+        }
+    }
+    if(state==0 || state==1)
+        cout<<"String is accepted";
+    else
+        cout<<"String is rejected";
+    return 0;
+}
+
+4.	NFA ending with 01
+#include <iostream>
+#include <vector>
+#include<string>
+using namespace std;
+vector<int> states = {0, 1, 2};
+vector<vector<pair<char, int>>> transitions = {
+    {{'0', 0}, {'1', 0}, {'0', 1}},
+    {{'1', 2}},
+    {{}}};
+bool simulate_nfa(string input)
+{
+
+    vector<int> current_states = {0};
+    for (char c : input)
+    {
+        vector<int> next_states;
+        for (int state : current_states)
+        {
+            for (auto transition : transitions[state])
+            {
+                if (transition.first == c)
+                {
+                    next_states.push_back(transition.second);
+                }
+            }
+        }
+        if (next_states.empty())
+        {
+            return false;
+        }
+        current_states = next_states;
+    }
+    for (int state : current_states)
+    {
+        if (state == 2)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+int main()
+{
+    string input;
+    cout << "Enter a string to check: ";
+    cin >> input;
+
+    if (simulate_nfa(input))
+    {
+        cout << "String ends with 01." << endl;
+    }
+    else
+    {
+        cout << "String does not end with 01." << endl;
+    }
+    return 0;
+}
+
+5.	PDA for anbn
+#include<iostream>
+#include<string>
+using namespace std;
+
+struct stack{
+    char A[10];
+    int top=-1;
+}S;
+
+void push(char a){
+    S.A[++S.top]=a;
+}
+void pop(){
+    S.top--;
+}
+
+int main(){
+    string str;
+    int len,state=0;
+    cout<<"Enter a string :";
+    cin>>str;
+    len=str.length();
+    for(int i=0;i<len;i++){
+        if(state==0 && str[i]=='a' &&S.A[S.top]=='a'){
+            push('a');
+            state=0;}
+        else if(state==0 && str[i]=='a' &&S.top==-1){
+            push('a');
+            state=0;}
+        else if(state==0 && str[i]=='b' &&S.A[S.top]=='a'){
+            pop();
+            state=1;}
+        else if(state==1 && str[i]=='b' && S.A[S.top]=='a'){
+            pop();
+            state=1;}
+        else{
+            cout<<"String rejected";
+            return 0;
+        }
+        }
+    
+    if(S.top==-1)
+        cout<<"String accepted";
+    else
+        cout<<"String rejected";
+}
+
+
+
+
+6.	PDA for equal number of a followed by equal number of b
+#include<iostream>
+#include<string>
+using namespace std;
+
+struct stack{
+    char A[10];
+    int top=-1;
+}S;
+
+void push(char a){
+    S.A[++S.top]=a;
+}
+void pop(){
+    S.top--;
+}
+
+int main(){
+    string str;
+    int len,state=0;
+    cout<<"Enter a string :";
+    cin>>str;
+    len=str.length();
+    for(int i=0;i<len;i++){
+        if(state==0 && str[i]=='a' &&S.A[S.top]=='a'){
+            push('a');
+            state=0;}
+        else if(state==0 && str[i]=='a' &&S.top==-1){
+            push('a');
+            state=0;}
+        else if(state==0 && str[i]=='b' &&S.A[S.top]=='a'){
+            pop();
+            state=1;}
+        else if(state==1 && str[i]=='b' && S.A[S.top]=='a'){
+            pop();
+            state=1;}
+        else{
+            cout<<"String rejected";
+            return 0;
+        }
+        }
+    
+    if(S.top==-1)
+        cout<<"String accepted";
+    else
+        cout<<"String rejected";
+}
+
+7.	TM for equal number of b followed by equal number of a
+#include<iostream>
+#include<string>
+using namespace std;
+
+int head=0;
+
+void right(){
+    head++;
+}
+
+void left(){
+    head--;
+}
+
+int main(){
+    string A;
+    int state=0;
+    cout<<"Enter a string :";
+    cin>>A;
+    while(true){
+        if(state==0 && A[head]=='b'){
+            A[head]='X';
+            right();
+            state=1;
+        }
+        else if(state==0 && A[head]=='Y'){
+            right();
+            break;
+        }
+        
+        else if(state==1 && (A[head]=='b'||A[head]=='Y')){
+            right();
+        }
+        else if(state==1 && A[head]=='a'){
+            A[head]='Y';
+            state=2;
+            left();
+        }
+        else if(state==2 && A[head]=='Y'||A[head]=='b'){
+            left();
+        }
+        else if(state==2 && A[head]=='X'){
+            state=0;
+            right();
+        }
+        else{
+            cout<<"String rejected";
+            return 0;
+        }
+    }
+    for(int i=head;i<A.length();i++){
+        if(A[i]!='Y'){
+            cout<<"String rejected";
+            return 0;
+        }
+    }
+    cout<<"String accepted";
+    return 0;
+}
+
+8.	TM for ancbn
+#include<iostream>
+#include<string>
+using namespace std;
+
+int head=0;
+
+void right(){
+    head++;
+}
+
+void left(){
+    head--;
+}
+
+int main(){
+    string A;
+    int state=0,len;
+    cout<<"Enter a string :";
+    cin>>A;
+    len=A.length();
+    len--;
+    while(true){
+        if(state==0 && A[head]=='a'){
+            A[head]='X';
+            right();
+            state=1;
+        }
+        else if(state==0 && A[head]=='c'){
+            A[head]='X';
+            state=3;
+            right();
+        }
+        else if(state==1&&(A[head]=='a'||A[head]=='c'||A[head]=='Y')){
+            right();
+        }
+        else if(state==1 && A[head]=='b'){
+            A[head]='Y';
+            left();
+            state=2;
+        }
+        else if(state==2 && (A[head]=='a'||A[head]=='c'||A[head]=='Y')){
+            left();
+        }
+        else if(state==2 && A[head]=='X'){
+            right();
+            state=0;
+        }
+        else if(state==3 && A[head]=='Y'){
+            right();
+            break;
+        }
+        else{
+            cout<<"String rejected";
+            return 0;
+        }
+    }
+    for(int i=head;i<A.length();i++){
+        if(A[i]!='Y'){
+            cout<<"String rejected";
+            return 0;
+        }
+    }
+    cout<<"String accepted";
+    return 0;
+}
